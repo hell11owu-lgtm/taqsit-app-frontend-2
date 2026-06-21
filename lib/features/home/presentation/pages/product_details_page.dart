@@ -206,7 +206,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 250,
+                height: 350,
                 width: double.infinity,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(16),
@@ -259,9 +259,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 Text(
                   product.description,
                   style: const TextStyle(
-                    fontFamily: 'cairo',
+                    // fontFamily: 'cairo',
                     fontSize: 14,
-                    color: Colors.grey,
+                    color: Color.fromARGB(255, 9, 9, 9),
                   ),
                 ),
               ],
@@ -308,7 +308,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         child: Text(
                           'القسط الشهري التقريبي:',
                           style: TextStyle(
-                            fontFamily: 'cairo',
+                            // fontFamily: 'cairo',
                             fontSize: 15,
                             overflow: TextOverflow.ellipsis,
                           ),

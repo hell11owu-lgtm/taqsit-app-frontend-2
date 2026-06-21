@@ -14,10 +14,6 @@ class HomeRepository {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
 
-      if (token == null) {
-        throw Exception('جلسة الدخول انتهت، يرجى تسجيل الدخول مجدداً');
-      }
-
       // جلب الـ ID مباشرة من المفتاح الموحد في StorageService
       int userId =
           StorageService.getUserId() ??
@@ -64,10 +60,6 @@ class HomeRepository {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
-
-      if (token == null) {
-        throw Exception('جلسة الدخول انتهت، يرجى تسجيل الدخول مجدداً');
-      }
 
       // جلب الـ user_id الديناميكي الخاص بالمستخدم الحالي
       int userId =
@@ -144,20 +136,20 @@ class HomeRepository {
 
             if (newUrl.contains('127.0.0.1') || newUrl.contains('localhost')) {
               newUrl = newUrl
-                  .replaceAll('127.0.0.1', '192.168.35.158')
-                  .replaceAll('localhost', '192.168.35.158');
+                  .replaceAll('127.0.0.1', '192.168.200.158')
+                  .replaceAll('localhost', '192.168.200.158');
 
               if (!newUrl.contains(':8000')) {
                 newUrl = newUrl.replaceFirst(
-                  '192.168.35.158',
-                  '192.168.35.158:8000',
+                  '192.168.200.158',
+                  '192.168.200.158:8000',
                 );
               }
             } else if (!newUrl.startsWith('http')) {
               if (!newUrl.startsWith('/')) {
                 newUrl = '/$newUrl';
               }
-              newUrl = 'http://192.168.35.158:8000$newUrl';
+              newUrl = 'http://192.168.200.158:8000$newUrl';
             }
 
             newUrl = newUrl.replaceAll('/storage/', '/images/');
@@ -182,28 +174,27 @@ class HomeRepository {
   }
 
   /// 5. دالة الشراء بعد تأمين قراءة الـ user_id بكافة الأشكال الممكنة 🛠️
- /// 5. دالة الشراء الديناميكية المتوافقة مع المنتج المختار والواجهة 🛒
+  /// 5. دالة الشراء الديناميكية المتوافقة مع المنتج المختار والواجهة 🛒
   Future<bool> purchaseProductWithInstallment({
-    required int productId,       // يأخذ الـ ID حق المنتج من الواجهة
-    required int months,          // يأخذ الأشهر اللي اختارها الزبون (3، 6، 12)
+    required int productId, // يأخذ الـ ID حق المنتج من الواجهة
+    required int months, // يأخذ الأشهر اللي اختارها الزبون (3، 6، 12)
     int? userId,
-    required double downPayment,  // يأخذ الدفعة المقدمة (نصف السعر) المحسوبة في الواجهة
+    required double
+    downPayment, // يأخذ الدفعة المقدمة (نصف السعر) المحسوبة في الواجهة
   }) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
 
-      if (token == null) {
-        throw Exception('جلسة الدخول انتهت، يرجى تسجيل الدخول مجدداً');
-      }
-
       // جلب معرف المستخدم الحالي ديناميكياً
-      int userIdFromStorage = StorageService.getUserId() ?? 
-                            prefs.getInt('user_id') ?? 4;
-      
+      int userIdFromStorage =
+          StorageService.getUserId() ?? prefs.getInt('user_id') ?? 4;
+
       int finalUserId = userId ?? userIdFromStorage;
 
-      print("DEBUG: Sending Purchase Request -> Product: $productId, User: $finalUserId, Plan: $months, DownPayment: $downPayment");
+      print(
+        "DEBUG: Sending Purchase Request -> Product: $productId, User: $finalUserId, Plan: $months, DownPayment: $downPayment",
+      );
 
       // الاتصال بمسار الشراء الفوري
       final response = await http.post(
@@ -223,7 +214,8 @@ class HomeRepository {
 
       final data = jsonDecode(response.body);
 
-      if (response.statusCode == 200 && (data['status'] == 'success' || data['message'] != null)) {
+      if (response.statusCode == 200 &&
+          (data['status'] == 'success' || data['message'] != null)) {
         return true;
       } else {
         // تمرير رسالة الخطأ القادمة من الباك إيند الحقيقية بالملي
@@ -242,10 +234,6 @@ class HomeRepository {
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('token');
 
-      if (token == null) {
-        throw Exception('جلسة الدخول انتهت، يرجى تسجيل الدخول مجدداً');
-      }
-
       final response = await http.get(
         Uri.parse('${AppConstants.baseUrl}/user/profile'),
         headers: {
@@ -263,7 +251,10 @@ class HomeRepository {
 
         // جلب البيانات ديناميكياً من الباك إيند حسب الزبون المسجل حالياً غصب
         return {
-          'full_name': user['full_name'] ?? bank['full_name'] ?? 'مرحباً بك', // 🌟 كلمة ترحيبية عامة كاحتياط فقط
+          'full_name':
+              user['full_name'] ??
+              bank['full_name'] ??
+              'مرحباً بك', // 🌟 كلمة ترحيبية عامة كاحتياط فقط
           'email': bank['email'] ?? 'لا يوجد بريد إلكتروني',
           'phone_number': user['phone_number'] ?? bank['phone_number'] ?? '',
           'account_number': bank['account_number'] ?? 'لا يوجد رقم حساب',

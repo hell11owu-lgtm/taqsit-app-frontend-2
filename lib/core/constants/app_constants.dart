@@ -1,6 +1,6 @@
 class AppConstants {
   // الرابط الأساسي للـ API (تأكد من ثبات الـ IP الخاص بجهازك)
-  static const String baseUrl = 'http://172.16.29.54:8000/api';
+  static const String baseUrl = 'http://192.168.200.158:8000/api';
 
   // روابط فرعية (Endpoints) متطابقة 100% مع الـ api.php في الباك إيند
   static const String login = '/login';

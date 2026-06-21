@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:installment/features/Auth/page/Login_screen.dart';
-import 'package:installment/features/Auth/page/register_screen.dart';
+// import 'package:installment/features/Auth/page/register_screen.dart';
 // import 'package:installment/features/newDesign/product_deisgn.dart';
 // import 'package:installment/features/home/presentation/pages/home_page.dart';
 import 'package:installment/main_page.dart';
@@ -17,11 +17,6 @@ class AppRouter {
       GoRoute(
         path: '/splash',
         builder: (context, state) => const OnboardingPage(),
-      ),
-      GoRoute(
-        path: '/register',
-        name: 'register',
-        builder: (context, state) => const RegisterScreen(),
       ),
 
       GoRoute(
